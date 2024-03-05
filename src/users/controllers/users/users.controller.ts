@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   NotFoundException,
   Post,
   Query,
@@ -28,7 +29,8 @@ export class UsersController {
     return 'Пользователь с таким именем найден';
   }
 
-  @Get()
+  @Post('/checkuser')
+  @HttpCode(200)
   async checkUser(@Body() userCredentials: GetUserDto) {
     const foundUser = await this.userService.checkUser(userCredentials);
 
@@ -39,10 +41,10 @@ export class UsersController {
       });
     }
 
-    return 'Аутентифиуация прошла успешно';
+    return { message: 'Успешная регистрация' };
   }
 
-  @Post()
+  @Post('/createuser')
   createUser(@Body() userCredentials: CreateUserDto) {
     this.userService.createUser(userCredentials);
   }
